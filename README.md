@@ -98,7 +98,7 @@ ros2 launch so_arm100_gym_bringup so_arm100.launch.py
 
 Note: If you want to launch with RVIZ, run:
 ```bash
-ros2 launch so_arm100_gym_bringup so_arm100.launch.py rviz:=True
+ros2 launch so_arm100_gym_bringup so_arm100.launch.py rviz:=true
 ```
 
 ---
