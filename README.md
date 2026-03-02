@@ -1,22 +1,22 @@
-# SO-ARM100 Teleoperation System
+# SO-ARM100 Reinforcement Learning System
 
-The **SO-ARM100 Teleop System** provides a complete **ROS 2–based teleoperation ecosystem** for controlling the SO-ARM100 robotic arm using a **WebXR interface**.  
+The **SO-ARM100 Reinforcement Learning System** provides a complete **ROS 2–based Reinforcement Learning ecosystem** for training policies on the SO-ARM100 robotic manipulator.  
 
 ---
 
 ## Included Packages
 
-- **`so_arm100_teleop_description`**  
+- **`so_arm100_gym_description`**  
   URDF/SDF robot models and mesh files for the SO-ARM100.
 
-- **`so_arm100_teleop_gazebo`**  
+- **`so_arm100_gym_gazebo`**  
   Custom Gazebo Sim plugins and world configurations.
 
-- **`so_arm100_teleop_application`**  
-  WebXR frontend, HTTPS server, and a secure WebSocket ↔ ROS 2 bridge.
+- **`so_arm100_gym_application`**  
+  Reinforcement Learning interface layer.
 
-- **`so_arm100_teleop_bringup`**  
-  Launch files and parameters to start the complete teleoperation stack.
+- **`so_arm100_gym_bringup`**  
+  Launch files and parameters to start the complete RL stack.
 
 ---
 
@@ -26,20 +26,7 @@ The **SO-ARM100 Teleop System** provides a complete **ROS 2–based teleoperatio
 
 ```bash
 cd ~/ros2_ws/src
-git clone <your-repo-link>
-```
-
----
-
-### Generate HTTPS Certificates (Required for WebXR)
-
-WebXR requires a **secure HTTPS context**.
-
-```bash
-cd ~/ros2_ws/src/so_arm100_teleop/so_arm100_teleop_application/scripts
-chmod +x generate_cert.sh
-chmod +x run_wireless.sh
-./generate_cert.sh
+git clone https://github.com/Manohara-Ai/SO-ARM100_Gym
 ```
 
 ---
@@ -53,7 +40,7 @@ Using other versions may require modifications.
 |----------|---------|
 | Operating System | Ubuntu 22.04 LTS (Jammy Jellyfish) |
 | ROS 2 Distro | Humble Hawksbill |
-| Gazebo | Fortress (6.17.0) |
+| Gazebo | Harmonic (8.10.0) |
 | Python | 3.10.x |
 
 ---
@@ -76,14 +63,19 @@ rosdep install --from-paths src --ignore-src -r -i -y --rosdistro humble
 
 ```bash
 sudo apt update
-sudo apt install -y python3-colcon-common-extensions websockets
-pip install ikpy
+sudo apt install -y python3-colcon-common-extensions 
+```
+
+---
+
+Note: To use Gazebo Harmonic (non-default pairing for ROS 2 Humble), ensure Harmonic is installed and run:
+```bash
+export GZ_VERSION=harmonic 
 ```
 
 ---
 
 ### Build the Workspace
-
 ```bash
 colcon build
 ```
@@ -101,47 +93,13 @@ source ~/ros2_ws/install/setup.bash
 ### Launch the Simulation
 
 ```bash
-ros2 launch so_arm100_teleop_bringup so_arm100.launch.py
+ros2 launch so_arm100_gym_bringup so_arm100.launch.py
 ```
 
+Note: If you want to launch with RVIZ, run:
 ```bash
-ros2 launch so_arm100_teleop_bringup so_arm100.launch.py record:=true
+ros2 launch so_arm100_gym_bringup so_arm100.launch.py rviz:=True
 ```
-
-Note: If recording fails, run:
-
-```bash
-chmod +x src/so_arm100_teleop/so_arm100_teleop_application/src/record_data.py
-```
-
----
-
-### Launch the Teleoperation Server
-
-```bash
-cd ~/ros2_ws
-./src/so_arm100_teleop/so_arm100_teleop_application/scripts/run_wireless.sh
-```
-
----
-
-## Control Logic Overview
-
-- Move the **right VR controller** to control the arm end-effector position using **Inverse Kinematics (IK)**.
-- Gripper control using the **Index Trigger**:
-  - Fully released: open gripper (`-0.2 rad`)
-  - Fully pressed: close gripper (`2.0 rad`)
-
----
-
-## Visual Feedback
-
-The WebXR interface provides two live camera streams:
-
-- **Arm-Mounted Camera**: First-person view from the gripper.
-- **Overhead Camera**: Wide-angle workspace view.
-
-Note: The robot currently tracks **position only**. Wrist orientation is not yet supported.
 
 ---
 
@@ -166,10 +124,7 @@ Note: The robot currently tracks **position only**. Wrist orientation is not yet
 
 ## Future Work
 
-1. VR control stabilization with smoothing and workspace scaling  
-2. Refactoring `so_arm100_teleop_application` into modular ROS 2 nodes  
-3. Reinforcement Learning training support in Gazebo  
-4. Hardware deployment on physical SO-ARM100 using the same ROS 2 bridge
+Extend the framework to support multi-agent reinforcement learning for coordinated dual-arm manipulation tasks such as cooperative grasping and object handover.
 
 ---
 
