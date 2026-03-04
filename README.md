@@ -29,17 +29,13 @@ colcon build
 
 # Included Packages
 
-- `so_arm100_gym_description`  
-  URDF/SDF robot models and mesh files.
+- `so_arm100_gym_description` - URDF/SDF robot models and mesh files.
 
-- `so_arm100_gym_gazebo`  
-  Gazebo Sim plugins and world configurations.
+- `so_arm100_gym_gazebo` - Gazebo Sim plugins and world configurations.
 
-- `so_arm100_gym_application`  
-  Reinforcement Learning interface layer.
+- `so_arm100_gym_application` - Holds ros2 specific code and configurations.
 
-- `so_arm100_gym_bringup`  
-  Launch files and system parameters.
+- `so_arm100_gym_bringup` - Holds launch files and high level utilities.
 
 ---
 
@@ -48,8 +44,8 @@ colcon build
 | Component | Version |
 |-----------|----------|
 | OS | Ubuntu 22.04 LTS |
-| ROS 2 | Humble Hawksbill |
-| Gazebo | Harmonic (8.10.0) |
+| ROS 2 | [Humble Hawksbill](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html) |
+| Gazebo | [Harmonic (8.10.0)](https://gazebosim.org/docs/latest/ros_installation/#gazebo-harmonic-with-ros-2-humble) |
 | Python | 3.10.x |
 
 Using other versions may require modifications.
@@ -132,7 +128,7 @@ If build issues occur:
 
 ```bash
 cd ~/ros2_ws
-rm -rf build install log
+rm -rf build/ install/ log/
 colcon build
 ```
 
@@ -201,7 +197,7 @@ Recommended fix:
 
 ```bash
 cd ~/ros2_ws
-rm -rf build install log
+rm -rf build/ install/ log/
 colcon build
 source install/setup.bash
 ```
